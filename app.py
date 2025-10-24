@@ -13,7 +13,7 @@ app = Flask(__name__)
 REPO_PATH = os.getenv('REPO_PATH', os.getcwd())
 
 def get_friday_weeks(num_weeks=12):
-    """Generate a list of Friday dates going back num_weeks"""
+    # Gets a list of Friday dates going back num_weeks
     today = datetime.now()
     # Find the most recent Friday
     days_since_friday = (today.weekday() - 4) % 7
@@ -27,13 +27,11 @@ def get_friday_weeks(num_weeks=12):
     return weeks
 
 def get_week_range(friday_date):
-    """Get the date range for a week starting on Friday"""
     start = friday_date
     end = friday_date + timedelta(days=6, hours=23, minutes=59, seconds=59)
     return start, end
 
 def get_git_diff(start_date, end_date):
-    """Get git diff for commits in the date range"""
     try:
         # Format dates for git log
         since = start_date.strftime('%Y-%m-%d %H:%M:%S')
