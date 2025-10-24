@@ -1,0 +1,46 @@
+<!-- Should try and change this to a j2 one -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RANCID Diff Checker</title>
+</head>
+<body>
+    <h1>RANCID Diff Checker</h1>
+
+    <h2>Select W/C</h2>
+    <form method="get">
+        <select name="week" onchange="this.form.submit()">
+            <option value="">-- Select a week --</option>
+            {% for week in weeks %}
+                <option value="{{ week.strftime('%Y-%m-%d') }}"
+                        {% if selected_week == week.strftime('%Y-%m-%d') %}selected{% endif %}>
+                    {{ week.strftime('%Y-%m-%d') }} (Friday)
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if selected_week %}
+        <h2>Week: {{ week_start.strftime('%Y-%m-%d') }} to {{ week_end.strftime('%Y-%m-%d') }}</h2>
+
+        {% if commits is not none %}
+            <h3>Commits ({{ commits|length }})</h3>
+            {% if commits %}
+                <ul>
+                {% for commit in commits %}
+                    <li>
+                        <strong>[{{ commit.author }}]</strong> {{ commit.message }}<br>
+                        <small>{{ commit.hash[:7] }} - {{ commit.date }}</small>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+
+            <h3>Diffs</h3>
+            {% if diff %}
+                <pre>{{ diff }}</pre>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</body>
+</html>
